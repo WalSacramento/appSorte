@@ -1,25 +1,15 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 import colors from '../styles/colors';
 
-export default function Ticket({ luckyNumber1, luckyNumber2 }) {
-
-  const [ticketColor, setTicketColor] = useState(colors.cinza)
-
-  const changeColor = () => {
-    if (ticketColor == colors.verde)
-      setTicketColor(colors.cinza);
-    else
-    setTicketColor(colors.verde);
-  }
+export default function ConfirmTicket({ luckyNumber1, luckyNumber2 }) {
 
   return (
-    <View style={[styles.ticket, { backgroundColor: ticketColor }]}>
-      <TouchableOpacity style={styles.ticketNumbers} onPress={changeColor}> 
+    <View style={styles.ticket}>
+      <View style={styles.ticketNumbers}> 
         <Text style={styles.ticketNumber}>{luckyNumber1}</Text>
         <Text style={styles.ticketNumber}>{luckyNumber2}</Text>
-      </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -28,7 +18,7 @@ const styles = StyleSheet.create({
   ticket: {
     width: 125,
     height: 90,
-    backgroundColor: colors.cinza,
+    backgroundColor: colors.verde,
     borderRadius: 10,
     marginBottom: 20,
     marginLeft: 10,
