@@ -1,66 +1,25 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+
+import Welcome from './src/screens/Welcome';
+import Login from './src/screens/Login';
+import Home from './src/screens/Home';
+import SellTickets from './src/screens/SellTickets';
+
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <WelcomeScreen ></WelcomeScreen>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="Welcome">
+        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="SellTickets" component={SellTickets} />
+      </Stack.Navigator>
       <StatusBar style="auto" />
-    </View>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
-const WelcomeScreen = () => {
-  return (
-    <View style={stylesWelcomeScreen.container}>
-      <View style={stylesWelcomeScreen.logo}>
-        <Image source={require('./src/img/logo-branco.png')} style={stylesWelcomeScreen.logoImg} />
-      </View>
-
-      <TouchableOpacity style={stylesWelcomeScreen.btnWelcome}>
-        <Text style={stylesWelcomeScreen.btnWelcomeText}>Entrar</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
-
-const stylesWelcomeScreen = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    backgroundColor: '#e0071c',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 120
-  },
-  logo: {
-    width: 250,
-    height: 200
-  },
-  logoImg: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'contain'
-  },
-  btnWelcome: {
-    width: 200,
-    height: 50,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  btnWelcomeText: {
-    fontSize: 22,
-    fontWeight: 'light',
-    color: '#e0071c'
-  }
-})
