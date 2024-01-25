@@ -6,6 +6,8 @@ import Welcome from './src/screens/Welcome';
 import Login from './src/screens/Login';
 import Home from './src/screens/Home';
 import SellTickets from './src/screens/SellTickets';
+import ConfirmTickets from './src/screens/ConfirmTickets';
+import ConfirmSell from './src/screens/ConfirmSell';
 
 
 const Stack = createStackNavigator();
@@ -18,6 +20,8 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="SellTickets" component={SellTickets} />
+        <Stack.Screen name="ConfirmTickets" component={ConfirmTickets} />
+        <Stack.Screen name="ConfirmSell" component={ConfirmSell} />
       </Stack.Navigator>
       <StatusBar style="auto" />
     </NavigationContainer>
