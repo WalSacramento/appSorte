@@ -12,9 +12,9 @@ export default function ConfirmTickets() {
   const navigation = useNavigation();
 
   const luckyNumbers = [
-    { number1: 1, number2: 2 },
-    { number1: 3, number2: 4 },
-    { number1: 5, number2: 6 },
+    { number1: 1547, number2: 2753 },
+    { number1: 1745, number2: 2752 },
+    { number1: 7895, number2: 6547 },
   ]
 
 

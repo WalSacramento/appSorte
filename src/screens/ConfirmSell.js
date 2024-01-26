@@ -12,9 +12,9 @@ export default function ConfirmSell() {
   const navigation = useNavigation();
 
   const luckyNumbers = [
-    { number1: 1, number2: 2 },
-    { number1: 3, number2: 4 },
-    { number1: 5, number2: 6 },
+    { number1: 1547, number2: 2753 },
+    { number1: 1745, number2: 2752 },
+    { number1: 7895, number2: 6547 },
   ]
 
 
@@ -26,11 +26,11 @@ export default function ConfirmSell() {
         <View style={styles.container}>
           <View style={styles.form}>
             <View style={styles.formGroup}>
-              <TextInput style={styles.formInput} placeholder='Nome do comprador' placeholderTextColor={colors.pretoTexto}/>
+              <TextInput style={styles.formInput} placeholder='Nome do comprador' placeholderTextColor={colors.pretoTexto} />
             </View>
 
             <View style={styles.formGroup}>
-              <TextInput style={styles.formInput} placeholder='Celular *' placeholderTextColor={colors.pretoTexto}/>
+              <TextInput style={styles.formInput} placeholder='Celular *' placeholderTextColor={colors.pretoTexto} />
             </View>
           </View>
           <Text style={styles.text}>Bilhetes selecionados</Text>
@@ -46,7 +46,7 @@ export default function ConfirmSell() {
 
       </View>
       <View style={styles.containerButton}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ConfirmTickets')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SaleCompleted')}>
           <Text style={styles.textButton}>Finalizar Compra</Text>
         </TouchableOpacity>
       </View>

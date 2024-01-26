@@ -1,9 +1,25 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
+import { api } from '../services/api';
 
 
 export default function Login() {
   const navigation = useNavigation();
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleLoginPress = () => {
+    api.post('/login', {
+      email: email,
+      password: password
+    }).then((response) => {
+      console.log(response.data)
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
 
   return (
     <View style={stylesLoginScreen.container}>
@@ -14,12 +30,12 @@ export default function Login() {
       <View style={stylesLoginScreen.form}>
         <View style={stylesLoginScreen.formGroup}>
           <Text style={stylesLoginScreen.formLabel}>Email</Text>
-          <TextInput style={stylesLoginScreen.formInput} />
+          <TextInput style={stylesLoginScreen.formInput} onChangeText={text => setEmail(text) } />
         </View>
 
         <View style={stylesLoginScreen.formGroup}>
           <Text style={stylesLoginScreen.formLabel}>Senha</Text>
-          <TextInput style={stylesLoginScreen.formInput} />
+          <TextInput style={stylesLoginScreen.formInput} onChangeText={text => setPassword(text) } secureTextEntry={true}/>
         </View>
 
         <TouchableOpacity style={stylesLoginScreen.btnLogin} onPress={() => navigation.navigate('Home')}>

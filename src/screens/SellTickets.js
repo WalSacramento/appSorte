@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -42,27 +42,29 @@ export default function SellTickets() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={{flex: 1}}>
-        <Navbar></Navbar>
-        <DrawInfo></DrawInfo>
-        <View style={styles.container}>
-          <Text style={styles.text}>Bilhetes disponíveis</Text>
-          <View style={styles.tickets}>
-            <FlatList
-              data={luckyNumbers}
-              renderItem={({ item }) => <Ticket luckyNumber1={item.number1} luckyNumber2={item.number2} />}
-              keyExtractor={item => item.number1}
-              numColumns={3} style={{flex: 1}}
-            />
+      <ScrollView>
+        <View style={{ flex: 1 }}>
+          <Navbar></Navbar>
+          <DrawInfo></DrawInfo>
+          <View style={styles.container}>
+            <Text style={styles.text}>Bilhetes disponíveis</Text>
+            <View style={styles.tickets}>
+              <FlatList
+                data={luckyNumbers}
+                renderItem={({ item }) => <Ticket luckyNumber1={item.number1} luckyNumber2={item.number2} />}
+                keyExtractor={item => item.number1}
+                numColumns={3} style={{ flex: 1 }}
+              />
+            </View>
           </View>
-        </View>
 
-      </View>
-      <View style={styles.containerButton}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ConfirmTickets')}>
-          <Text style={styles.textButton}>Selecionar Bilhetes</Text>
-        </TouchableOpacity>
-      </View>
+        </View>
+        <View style={styles.containerButton}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ConfirmTickets')}>
+            <Text style={styles.textButton}>Selecionar Bilhetes</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
