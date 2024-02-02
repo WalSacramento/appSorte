@@ -3,20 +3,17 @@ import { useState } from 'react';
 
 import colors from '../styles/colors';
 
-export default function Ticket({ luckyNumber1, luckyNumber2 }) {
+export default function Ticket({ id, luckyNumber1, luckyNumber2, selectTicket, selectedTickets }) {
+  const isSelected = selectedTickets.includes(id);
+  const ticketColor = isSelected ? colors.verde : colors.cinza;
 
-  const [ticketColor, setTicketColor] = useState(colors.cinza)
-
-  const changeColor = () => {
-    if (ticketColor == colors.verde)
-      setTicketColor(colors.cinza);
-    else
-    setTicketColor(colors.verde);
-  }
+  const handlePress = () => {
+    selectTicket(id);
+  };
 
   return (
     <View style={[styles.ticket, { backgroundColor: ticketColor }]}>
-      <TouchableOpacity style={styles.ticketNumbers} onPress={changeColor}> 
+      <TouchableOpacity style={styles.ticketNumbers} onPress={handlePress}> 
         <Text style={styles.ticketNumber}>{luckyNumber1}</Text>
         <Text style={styles.ticketNumber}>{luckyNumber2}</Text>
       </TouchableOpacity>
@@ -45,4 +42,4 @@ const styles = StyleSheet.create({
     color: colors.pretoTexto,
     marginHorizontal: 5
   }
-})
+});

@@ -6,65 +6,100 @@ import Navbar from '../components/Navbar';
 import DrawInfo from '../components/DrawInfo';
 import colors from '../styles/colors';
 import Ticket from '../components/Ticket';
+import { useEffect, useState } from 'react';
+import { api } from '../services/api';
 
-export default function SellTickets() {
-
+export default function SellTickets({ route }) {
   const navigation = useNavigation();
+  const { drawId } = route.params;
 
-  const luckyNumbers = [
-    { number1: 1547, number2: 2753 },
-    { number1: 1745, number2: 2752 },
-    { number1: 7895, number2: 6547 },
-    { number1: 1597, number2: 7536 },
-    { number1: 1547, number2: 2753 },
-    { number1: 1745, number2: 2752 },
-    { number1: 7895, number2: 6547 },
-    { number1: 1597, number2: 7536 },
-    { number1: 1547, number2: 2753 },
-    { number1: 1745, number2: 2752 },
-    { number1: 7895, number2: 6547 },
-    { number1: 1597, number2: 7536 },
-    { number1: 1547, number2: 2753 },
-    { number1: 1745, number2: 2752 },
-    { number1: 7895, number2: 6547 },
-    { number1: 1597, number2: 7536 },
-    { number1: 1547, number2: 2753 },
-    { number1: 1745, number2: 2752 },
-    { number1: 7895, number2: 6547 },
-    { number1: 1597, number2: 7536 },
-    { number1: 1547, number2: 2753 },
-    { number1: 1745, number2: 2752 },
-    { number1: 7895, number2: 6547 },
-    { number1: 1597, number2: 7536 },
+  const [tickets, setTickets] = useState([]);
+  const [selectedTickets, setSelectedTickets] = useState([]);
+  const [page, setPage] = useState(1);
 
-  ]
+  useEffect(() => {
+    fetchLuckNumbers();
+  }, [page]);
 
+  const fetchLuckNumbers = async () => {
+    try {
+      const response = await api.get(`/available-tickets/${drawId}`, {
+        params: {
+          page: page,
+        },
+      });
+      setTickets(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const prevPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const nextPage = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  const selectTicket = (id) => {
+    setSelectedTickets((prevSelectedTickets) => {
+      if (prevSelectedTickets.includes(id)) {
+        // Se o ticket já está selecionado, remova-o da lista
+        return prevSelectedTickets.filter((ticketId) => ticketId !== id);
+      } else {
+        // Se o ticket não está selecionado, adicione-o à lista
+        return [...prevSelectedTickets, id];
+      }
+    });
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView>
-        <View style={{ flex: 1 }}>
-          <Navbar></Navbar>
-          <DrawInfo></DrawInfo>
-          <View style={styles.container}>
-            <Text style={styles.text}>Bilhetes disponíveis</Text>
+
+      <View style={{ flex: 1 }}>
+        <Navbar></Navbar>
+        <DrawInfo></DrawInfo>
+        <View style={styles.container}>
+          <Text style={styles.text}>Bilhetes disponíveis</Text>
+          <View style={styles.pageSelector}>
+            <TouchableOpacity style={styles.prevPage} onPress={prevPage}>
+              <Text style={styles.pageSelectorText}>Anterior</Text>
+            </TouchableOpacity>
+            <Text style={styles.pageSelectorText}>{page}</Text>
+            <TouchableOpacity style={styles.nextPage} onPress={nextPage}>
+              <Text style={styles.pageSelectorText}>Próxima</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView style={styles.scrollViewTickets}>
             <View style={styles.tickets}>
               <FlatList
-                data={luckyNumbers}
-                renderItem={({ item }) => <Ticket luckyNumber1={item.number1} luckyNumber2={item.number2} />}
-                keyExtractor={item => item.number1}
+                data={tickets}
+                renderItem={({ item }) => (
+                  <Ticket 
+                    id={item.id}
+                    luckyNumber1={item.luckyNumber1} 
+                    luckyNumber2={item.luckyNumber2} 
+                    selectTicket={selectTicket}
+                    selectedTickets={selectedTickets}
+                  />
+                )}
+                keyExtractor={item => item.luckyNumber1}
                 numColumns={3} style={{ flex: 1 }}
               />
             </View>
-          </View>
+          </ScrollView>
 
         </View>
-        <View style={styles.containerButton}>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ConfirmTickets')}>
-            <Text style={styles.textButton}>Selecionar Bilhetes</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+
+      </View>
+      <View style={styles.containerButton}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ConfirmTickets')}>
+          <Text style={styles.textButton}>Selecionar Bilhetes</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
@@ -88,6 +123,34 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'contain'
+  },
+  pageSelector: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20
+  },
+  prevPage: {
+    backgroundColor: colors.amarelo,
+    padding: 10,
+    borderRadius: 5
+  },
+  nextPage: {
+    backgroundColor: colors.amarelo,
+    padding: 10,
+    borderRadius: 5
+  },
+  pageSelectorText: {
+    fontSize: 18,
+    fontWeight: 'light',
+    color: colors.pretoTexto,
+    marginHorizontal: 10
+  },
+  scrollViewTickets: {
+    width: '100%',
+    flex: 1,
+    marginBottom: 20
   },
   tickets: {
     width: '100%',
