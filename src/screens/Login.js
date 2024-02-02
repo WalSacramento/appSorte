@@ -10,15 +10,20 @@ export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleLoginPress = () => {
-    api.post('/login', {
-      email: email,
-      password: password
-    }).then((response) => {
-      console.log(response.data)
-    }).catch((error) => {
+  const signIn = async () => {
+    try {
+      const response = await api.post('/login', {
+        email: email,
+        password: password
+      })
+
+      if (response.data) {
+        console.log(response.data)
+        navigation.navigate('Home')
+      }
+    } catch (error) {
       console.log(error)
-    })
+    }
   }
 
   return (
@@ -30,15 +35,15 @@ export default function Login() {
       <View style={stylesLoginScreen.form}>
         <View style={stylesLoginScreen.formGroup}>
           <Text style={stylesLoginScreen.formLabel}>Email</Text>
-          <TextInput style={stylesLoginScreen.formInput} onChangeText={text => setEmail(text) } />
+          <TextInput style={stylesLoginScreen.formInput} onChangeText={text => setEmail(text)} />
         </View>
 
         <View style={stylesLoginScreen.formGroup}>
           <Text style={stylesLoginScreen.formLabel}>Senha</Text>
-          <TextInput style={stylesLoginScreen.formInput} onChangeText={text => setPassword(text) } secureTextEntry={true}/>
+          <TextInput style={stylesLoginScreen.formInput} onChangeText={text => setPassword(text)} secureTextEntry={true} />
         </View>
 
-        <TouchableOpacity style={stylesLoginScreen.btnLogin} onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity style={stylesLoginScreen.btnLogin} onPress={signIn}>
           <Text style={stylesLoginScreen.btnLoginText}>Entrar</Text>
         </TouchableOpacity>
       </View>
