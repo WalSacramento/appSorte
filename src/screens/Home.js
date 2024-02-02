@@ -10,7 +10,7 @@ export default function Home() {
       <View style={styles.logo}>
         <Image source={require('../img/logo-vermelho.png')} style={styles.logoImg} />
       </View>
-      <TouchableOpacity style={styles.btnSell} onPress={() => navigation.navigate('SellTickets')}>
+      <TouchableOpacity style={styles.btnSell} onPress={() => navigation.navigate('SelectDraw')}>
         <Text style={styles.btnSellText}>
           Vender bilhetes
         </Text>
