@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/Feather';
+
 
 import Navbar from '../components/Navbar';
 import DrawInfo from '../components/DrawInfo';
@@ -30,7 +32,7 @@ export default function SellTickets({ route }) {
       });
       setTickets(response.data);
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   };
 
@@ -43,6 +45,10 @@ export default function SellTickets({ route }) {
   const nextPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
+
+  const refreshLuckNumbers = () => {
+    fetchLuckNumbers()
+  }
 
   const selectTicket = (id) => {
     setSelectedTickets((prevSelectedTickets) => {
@@ -72,16 +78,19 @@ export default function SellTickets({ route }) {
             <TouchableOpacity style={styles.nextPage} onPress={nextPage}>
               <Text style={styles.pageSelectorText}>Próxima</Text>
             </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonRefresh} onPress={refreshLuckNumbers}>
+              <Icon name="refresh-cw" size={30} color="#000" />
+            </TouchableOpacity>
           </View>
           <ScrollView style={styles.scrollViewTickets}>
             <View style={styles.tickets}>
               <FlatList
                 data={tickets}
                 renderItem={({ item }) => (
-                  <Ticket 
+                  <Ticket
                     id={item.id}
-                    luckyNumber1={item.luckyNumber1} 
-                    luckyNumber2={item.luckyNumber2} 
+                    luckyNumber1={item.luckyNumber1}
+                    luckyNumber2={item.luckyNumber2}
                     selectTicket={selectTicket}
                     selectedTickets={selectedTickets}
                   />
@@ -96,7 +105,7 @@ export default function SellTickets({ route }) {
 
       </View>
       <View style={styles.containerButton}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ConfirmTickets')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ConfirmSell', { tickets: selectedTickets })}>
           <Text style={styles.textButton}>Selecionar Bilhetes</Text>
         </TouchableOpacity>
       </View>
@@ -140,6 +149,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.amarelo,
     padding: 10,
     borderRadius: 5
+  },
+  buttonRefresh: {
+    backgroundColor: colors.amarelo,
+    padding: 10,
+    borderRadius: 5,
+    marginLeft: 10
   },
   pageSelectorText: {
     fontSize: 18,
