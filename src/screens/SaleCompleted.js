@@ -6,10 +6,16 @@ import Navbar from '../components/Navbar';
 import DrawInfo from '../components/DrawInfo';
 import colors from '../styles/colors';
 import ConfirmTicket from '../components/ConfirmTicket';
+import { useEffect } from 'react';
 
-export default function SaleCompleted() {
+export default function SaleCompleted({ route }) {
+  useEffect(() => {
+    teste()
+  }, [])
 
   const navigation = useNavigation();
+
+  const { buyerName, buyerPhoneNumber, reservedTickets } = route.params
 
   const luckyNumbers = [
     { number1: 1547, number2: 2753 },
@@ -17,6 +23,10 @@ export default function SaleCompleted() {
     { number1: 7895, number2: 6547 },
   ]
 
+  const teste = () => {
+    console.log('teste')
+    console.log(buyerName, buyerPhoneNumber, reservedTickets)
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -25,12 +35,17 @@ export default function SaleCompleted() {
         <DrawInfo></DrawInfo>
         <View style={styles.container}>
           <Text style={styles.text}>Venda Finalizada!</Text>
+          <View style={styles.sellInfo}>
+          <Text style={styles.sellText}>{reservedTickets.success}</Text>
+          <Text style={styles.sellText}>Comprador: {buyerName}</Text>
+          <Text style={styles.sellText}>Telefone: {buyerPhoneNumber}</Text>
+          </View>
           <View style={styles.tickets}>
-            <FlatList
-              data={luckyNumbers}
-              renderItem={({ item }) => <ConfirmTicket luckyNumber1={item.number1} luckyNumber2={item.number2} />}
-              keyExtractor={item => item.number1}
-              numColumns={3} style={{ flex: 1 }}
+          <FlatList
+              data={reservedTickets.reservedTickets}
+              renderItem={({ item }) => <ConfirmTicket luckyNumber1={item.luckyNumber1} luckyNumber2={item.luckyNumber2} />}
+              keyExtractor={item => item.luckyNumber1.toString()}
+              numColumns={3} style={{flex: 1}}
             />
           </View>
         </View>
@@ -77,6 +92,20 @@ const styles = StyleSheet.create({
     color: '#000',
     textTransform: 'uppercase',
     marginBottom: 20
+  },
+  sellInfo: {
+    width: '80%',
+    marginBottom: 20,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.pretoTexto,
+    padding: 10,
+    borderRadius: 5
+  },
+  sellText: {
+    fontSize: 18,
+    fontWeight: 'light',
+    color: colors.pretoTexto
   },
   containerButton: {
     position: 'absolute',
