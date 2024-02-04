@@ -6,17 +6,55 @@ import Navbar from '../components/Navbar';
 import DrawInfo from '../components/DrawInfo';
 import colors from '../styles/colors';
 import ConfirmTicket from '../components/ConfirmTicket';
+import { useEffect, useState } from 'react';
+import { api } from '../services/api';
 
-export default function ConfirmSell() {
+export default function ConfirmSell({ route }) {
+  useEffect(() => {
+    reserveTickets()
+  }, [])
+
 
   const navigation = useNavigation();
 
-  const luckyNumbers = [
-    { number1: 1547, number2: 2753 },
-    { number1: 1745, number2: 2752 },
-    { number1: 7895, number2: 6547 },
-  ]
+  const selectedTickets = route.params.tickets;
+  const [reservedTickets, setReservedTickets] = useState([])
+  const [buyerName, setBuyerName] = useState('')
+  const [buyerPhoneNumber, setBuyerPhoneNumber] = useState('')
 
+  const reserveTickets = async () => {
+    try {
+      const response = await api.put('/reserve-tickets', {
+        tickets: selectedTickets
+      })
+
+      if (response.data) {
+        // navigation.navigate('ConfirmSell')
+        setReservedTickets(response.data)
+        console.log(response.data)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const confirmSell = async () => {
+    try {
+      const response = await api.post('/sell-tickets', {
+        tickets: selectedTickets,
+        buyerName: buyerName,
+        buyerPhoneNumber: buyerPhoneNumber
+        
+      })
+
+      if (response.data) {
+        console.log(response.data)
+        navigation.navigate('SaleCompleted', { buyerName: buyerName, buyerPhoneNumber: buyerPhoneNumber, reservedTickets: reservedTickets })
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -26,27 +64,27 @@ export default function ConfirmSell() {
         <View style={styles.container}>
           <View style={styles.form}>
             <View style={styles.formGroup}>
-              <TextInput style={styles.formInput} placeholder='Nome do comprador' placeholderTextColor={colors.pretoTexto} />
+              <TextInput style={styles.formInput} placeholder='Nome do comprador' placeholderTextColor={colors.pretoTexto} onChangeText={text => setBuyerName(text)}/>
             </View>
 
             <View style={styles.formGroup}>
-              <TextInput style={styles.formInput} placeholder='Celular *' placeholderTextColor={colors.pretoTexto} />
+              <TextInput style={styles.formInput} placeholder='Celular *' placeholderTextColor={colors.pretoTexto} keyboardType='numeric' onChangeText={text => setBuyerPhoneNumber(text)} />
             </View>
           </View>
           <Text style={styles.text}>Bilhetes selecionados</Text>
           <View style={styles.tickets}>
             <FlatList
-              data={luckyNumbers}
-              renderItem={({ item }) => <ConfirmTicket luckyNumber1={item.number1} luckyNumber2={item.number2} />}
-              keyExtractor={item => item.number1}
-              numColumns={3} style={{ flex: 1 }}
+              data={reservedTickets.reservedTickets}
+              renderItem={({ item }) => <ConfirmTicket luckyNumber1={item.luckyNumber1} luckyNumber2={item.luckyNumber2} />}
+              keyExtractor={item => item.luckyNumber1.toString()}
+              numColumns={3} style={{flex: 1}}
             />
           </View>
         </View>
 
       </View>
       <View style={styles.containerButton}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('SaleCompleted')}>
+        <TouchableOpacity style={styles.button} onPress={() => confirmSell()}>
           <Text style={styles.textButton}>Finalizar Compra</Text>
         </TouchableOpacity>
       </View>
