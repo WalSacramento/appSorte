@@ -6,17 +6,50 @@ import Navbar from '../components/Navbar';
 import DrawInfo from '../components/DrawInfo';
 import colors from '../styles/colors';
 import ConfirmTicket from '../components/ConfirmTicket';
+import { useEffect, useState } from 'react';
+import { api } from '../services/api';
 
-export default function ConfirmTickets() {
+export default function ConfirmTickets({ route }) {
+  useEffect(() => {
+    reserveTickets()
+    // fetchReservedTickets()
+  }, [selectedTickets])
 
   const navigation = useNavigation();
+  
+  const selectedTickets = route.params.tickets;
+  const [reservedTickets, setReservedTickets] = useState([])
+  
+  const reserveTickets = async () => {
+    try {
+      const response = await api.put('/reserve-tickets', {
+        tickets: selectedTickets
+      })
 
-  const luckyNumbers = [
-    { number1: 1547, number2: 2753 },
-    { number1: 1745, number2: 2752 },
-    { number1: 7895, number2: 6547 },
-  ]
+      if (response.data) {
+        // navigation.navigate('ConfirmSell')
+        // fetchReservedTickets()
+        setReservedTickets(response.data)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
+  const fetchReservedTickets = async () => {
+    try {
+      const response = await api.post('/find-reserved-tickets', {
+        tickets: selectedTickets
+      })
+
+      if (response.data) {
+        console.log(response.data)
+        setReservedTickets(response.data)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -27,8 +60,8 @@ export default function ConfirmTickets() {
           <Text style={styles.text}>Bilhetes selecionados</Text>
           <View style={styles.tickets}>
             <FlatList
-              data={luckyNumbers}
-              renderItem={({ item }) => <ConfirmTicket luckyNumber1={item.number1} luckyNumber2={item.number2} />}
+              data={reservedTickets}
+              renderItem={({ item }) => <ConfirmTicket luckyNumber1={item.luckyNumber1} luckyNumber2={item.luckyNumber2} />}
               keyExtractor={item => item.number1}
               numColumns={3} style={{flex: 1}}
             />
@@ -37,7 +70,7 @@ export default function ConfirmTickets() {
 
       </View>
       <View style={styles.containerButton}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ConfirmSell')}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('ConfirmSell', {tickets: selectedTickets})}>
           <Text style={styles.textButton}>Confirmar Bilhetes</Text>
         </TouchableOpacity>
       </View>
