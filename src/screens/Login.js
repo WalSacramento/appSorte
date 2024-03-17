@@ -21,7 +21,6 @@ export default function Login() {
       })
 
       if (response.data.email === email) {
-        console.log(response.data)
         setUser(response.data)
         navigation.navigate('Home')
       }

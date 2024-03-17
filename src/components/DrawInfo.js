@@ -1,16 +1,12 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View } from 'react-native';
 
-import colors from '../styles/colors';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import DrawContext from '../contexts/DrawContext';
+import colors from '../styles/colors';
 
 export default function DrawInfo() {
   const navigation = useNavigation();
-
-  useEffect(() => {
-    console.log('DrawInfo.js:', draw)
-  }, [])
 
   const { draw } = useContext(DrawContext)
   return (
@@ -59,5 +55,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.pretoTexto
   }
-  
+
 })

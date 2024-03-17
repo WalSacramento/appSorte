@@ -1,14 +1,14 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import Navbar from '../components/Navbar';
-import DrawInfo from '../components/DrawInfo';
-import colors from '../styles/colors';
-import ConfirmTicket from '../components/ConfirmTicket';
 import { useContext, useEffect, useState } from 'react';
-import { api } from '../services/api';
+import ConfirmTicket from '../components/ConfirmTicket';
+import DrawInfo from '../components/DrawInfo';
+import Navbar from '../components/Navbar';
 import UserContext from '../contexts/UserContext';
+import { api } from '../services/api';
+import colors from '../styles/colors';
 
 export default function ConfirmSell({ route }) {
   useEffect(() => {
@@ -32,9 +32,7 @@ export default function ConfirmSell({ route }) {
       })
 
       if (response.data) {
-        // navigation.navigate('ConfirmSell')
         setReservedTickets(response.data)
-        console.log(response.data)
       }
     } catch (error) {
       console.error(error)
@@ -51,7 +49,6 @@ export default function ConfirmSell({ route }) {
       })
 
       if (response.data) {
-        console.log(response.data)
         navigation.navigate('SaleCompleted', { buyerName: buyerName, buyerPhoneNumber: buyerPhoneNumber, reservedTickets: reservedTickets })
       }
     } catch (error) {
@@ -67,7 +64,7 @@ export default function ConfirmSell({ route }) {
         <View style={styles.container}>
           <View style={styles.form}>
             <View style={styles.formGroup}>
-              <TextInput style={styles.formInput} placeholder='Nome do comprador' placeholderTextColor={colors.pretoTexto} onChangeText={text => setBuyerName(text)}/>
+              <TextInput style={styles.formInput} placeholder='Nome do comprador' placeholderTextColor={colors.pretoTexto} onChangeText={text => setBuyerName(text)} />
             </View>
 
             <View style={styles.formGroup}>
@@ -80,7 +77,7 @@ export default function ConfirmSell({ route }) {
               data={reservedTickets.reservedTickets}
               renderItem={({ item }) => <ConfirmTicket luckyNumber1={item.luckyNumber1} luckyNumber2={item.luckyNumber2} />}
               keyExtractor={item => item.luckyNumber1.toString()}
-              numColumns={3} style={{flex: 1}}
+              numColumns={3} style={{ flex: 1 }}
             />
           </View>
         </View>

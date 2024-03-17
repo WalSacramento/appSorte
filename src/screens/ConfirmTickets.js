@@ -44,7 +44,6 @@ export default function ConfirmTickets({ route }) {
       })
 
       if (response.data) {
-        console.log(response.data)
         setReservedTickets(response.data)
       }
     } catch (error) {

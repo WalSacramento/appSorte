@@ -15,7 +15,7 @@ import DrawContext from '../contexts/DrawContext';
 export default function SelectDraw() {
   useEffect(() => {
     fetchDraws()
-  }, [])
+  }, [page])
 
   const [draws, setDraws] = useState([])
   const [page, setPage] = useState(1)
@@ -23,16 +23,30 @@ export default function SelectDraw() {
 
   const fetchDraws = async () => {
     try {
-      const response = await api.get('/available-draws')
+      const response = await api.get('/available-draws', {
+        params: {
+          page: page,
+          pageSize: 30
+        }
+      })
 
       if (response.data) {
-        console.log(response.data)
         setDraws(response.data)
       }
     } catch (error) {
       console.log(error)
     }
   }
+
+  const prevPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const nextPage = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
 
   const refreshDraws = () => {
     fetchDraws()
@@ -53,11 +67,11 @@ export default function SelectDraw() {
         <View style={styles.container}>
           <Text style={styles.text}>Sorteios disponíveis</Text>
           <View style={styles.pageSelector}>
-            <TouchableOpacity style={styles.prevPage} onPress={() => console.log("prevPage")}>
+            <TouchableOpacity style={styles.prevPage} onPress={prevPage}>
               <Text style={styles.pageSelectorText}>Anterior</Text>
             </TouchableOpacity>
             <Text style={styles.pageSelectorText}>{page}</Text>
-            <TouchableOpacity style={styles.nextPage} onPress={() => console.log("nextPage")}>
+            <TouchableOpacity style={styles.nextPage} onPress={nextPage}>
               <Text style={styles.pageSelectorText}>Próxima</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonRefresh} onPress={refreshDraws}>

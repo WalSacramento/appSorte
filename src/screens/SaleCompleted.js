@@ -9,18 +9,10 @@ import ConfirmTicket from '../components/ConfirmTicket';
 import { useEffect } from 'react';
 
 export default function SaleCompleted({ route }) {
-  useEffect(() => {
-    teste()
-  }, [])
 
   const navigation = useNavigation();
 
   const { buyerName, buyerPhoneNumber, reservedTickets } = route.params
-
-  const teste = () => {
-    console.log('teste')
-    console.log(buyerName, buyerPhoneNumber, reservedTickets)
-  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
