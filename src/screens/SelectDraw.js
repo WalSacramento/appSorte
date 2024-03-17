@@ -3,6 +3,8 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 import { api } from '../services/api';
+import Icon from 'react-native-vector-icons/Feather';
+
 
 import Navbar from '../components/Navbar';
 import DrawInfo from '../components/DrawInfo';
@@ -15,6 +17,7 @@ export default function SelectDraw() {
   }, [])
 
   const [draws, setDraws] = useState([])
+  const [page, setPage] = useState(1)
 
   const fetchDraws = async () => {
     try {
@@ -29,8 +32,12 @@ export default function SelectDraw() {
     }
   }
 
-  const selectDraw = (drawId) => {
-    navigation.navigate('SellTickets', { drawId: drawId })
+  const refreshDraws = () => {
+    fetchDraws()
+  }
+
+  const selectDraw = (drawId, award) => {
+    navigation.navigate('SellTickets', { drawId: drawId, award: award})
   }
 
   const navigation = useNavigation();
@@ -40,16 +47,27 @@ export default function SelectDraw() {
 
       <View style={{ flex: 1 }}>
         <Navbar></Navbar>
-        <DrawInfo></DrawInfo>
         <View style={styles.container}>
           <Text style={styles.text}>Sorteios disponíveis</Text>
+          <View style={styles.pageSelector}>
+            <TouchableOpacity style={styles.prevPage} onPress={() => console.log("prevPage")}>
+              <Text style={styles.pageSelectorText}>Anterior</Text>
+            </TouchableOpacity>
+            <Text style={styles.pageSelectorText}>{page}</Text>
+            <TouchableOpacity style={styles.nextPage} onPress={() => console.log("nextPage")}>
+              <Text style={styles.pageSelectorText}>Próxima</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonRefresh} onPress={refreshDraws}>
+              <Icon name="refresh-cw" size={30} color="#000" />
+            </TouchableOpacity>
+          </View>
           <View style={styles.draws}>
             <FlatList
               data={draws}
               keyExtractor={item => item.id}
               numColumns={2}
               renderItem={({ item }) => (
-                <TouchableOpacity style={styles.drawCard} onPress={() => selectDraw(item.id)}>
+                <TouchableOpacity style={styles.drawCard} onPress={() => selectDraw(item.id, item.award)}>
                   <Text style={styles.drawName}>{item.name}</Text>
                   <Text style={styles.drawAward}>{item.award}</Text>
                 </TouchableOpacity>
@@ -144,5 +162,34 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'light',
     color: colors.pretoTexto
-  }
+  },
+  pageSelector: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20
+  },
+  prevPage: {
+    backgroundColor: colors.amarelo,
+    padding: 10,
+    borderRadius: 5
+  },
+  nextPage: {
+    backgroundColor: colors.amarelo,
+    padding: 10,
+    borderRadius: 5
+  },
+  buttonRefresh: {
+    backgroundColor: colors.amarelo,
+    padding: 10,
+    borderRadius: 5,
+    marginLeft: 10
+  },
+  pageSelectorText: {
+    fontSize: 18,
+    fontWeight: 'light',
+    color: colors.pretoTexto,
+    marginHorizontal: 10
+  },
 })

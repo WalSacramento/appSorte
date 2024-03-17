@@ -13,7 +13,7 @@ import { api } from '../services/api';
 
 export default function SellTickets({ route }) {
   const navigation = useNavigation();
-  const { drawId } = route.params;
+  const { drawId, award } = route.params;
 
   const [tickets, setTickets] = useState([]);
   const [selectedTickets, setSelectedTickets] = useState([]);
@@ -25,9 +25,10 @@ export default function SellTickets({ route }) {
 
   const fetchLuckNumbers = async () => {
     try {
-      const response = await api.get(`/available-tickets/${drawId}`, {
+      const response = await api.get(`/ticketsAvailable/${drawId}`, {
         params: {
           page: page,
+          pageSize: 30
         },
       });
       setTickets(response.data);
@@ -67,7 +68,7 @@ export default function SellTickets({ route }) {
 
       <View style={{ flex: 1 }}>
         <Navbar></Navbar>
-        <DrawInfo></DrawInfo>
+        <DrawInfo drawAward={award}/>
         <View style={styles.container}>
           <Text style={styles.text}>Bilhetes disponíveis</Text>
           <View style={styles.pageSelector}>

@@ -17,7 +17,7 @@ export default function Login() {
         password: password
       })
 
-      if (response.data) {
+      if (response.data.email === email) {
         console.log(response.data)
         navigation.navigate('Home')
       }

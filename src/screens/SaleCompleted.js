@@ -17,12 +17,6 @@ export default function SaleCompleted({ route }) {
 
   const { buyerName, buyerPhoneNumber, reservedTickets } = route.params
 
-  const luckyNumbers = [
-    { number1: 1547, number2: 2753 },
-    { number1: 1745, number2: 2752 },
-    { number1: 7895, number2: 6547 },
-  ]
-
   const teste = () => {
     console.log('teste')
     console.log(buyerName, buyerPhoneNumber, reservedTickets)

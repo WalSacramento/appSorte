@@ -18,6 +18,7 @@ export default function ConfirmTickets({ route }) {
   const navigation = useNavigation();
   
   const selectedTickets = route.params.tickets;
+  const award = route.params.award;
   const [reservedTickets, setReservedTickets] = useState([])
   
   const reserveTickets = async () => {
@@ -55,7 +56,7 @@ export default function ConfirmTickets({ route }) {
     <SafeAreaView style={styles.safeArea}>
       <View style={{flex: 1}}>
         <Navbar></Navbar>
-        <DrawInfo></DrawInfo>
+        <DrawInfo drawAward={award}/>
         <View style={styles.container}>
           <Text style={styles.text}>Bilhetes selecionados</Text>
           <View style={styles.tickets}>

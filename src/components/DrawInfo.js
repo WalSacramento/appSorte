@@ -1,11 +1,9 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Feather';
 
 import colors from '../styles/colors';
 
-export default function DrawInfo() {
+export default function DrawInfo({ drawAward }) {
   const navigation = useNavigation();
 
   return (
@@ -13,7 +11,7 @@ export default function DrawInfo() {
       <View style={styles.drawInfo}>
         <Text style={styles.title}>Premiação:</Text>
         <View style={styles.award}>
-          <Text style={styles.awardText}>R$ 4000</Text>
+          <Text style={styles.awardText}>{drawAward}</Text>
         </View>
       </View>
     </>
