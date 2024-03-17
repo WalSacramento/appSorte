@@ -56,7 +56,7 @@ export default function ConfirmTickets({ route }) {
     <SafeAreaView style={styles.safeArea}>
       <View style={{flex: 1}}>
         <Navbar></Navbar>
-        <DrawInfo drawAward={award}/>
+        <DrawInfo/>
         <View style={styles.container}>
           <Text style={styles.text}>Bilhetes selecionados</Text>
           <View style={styles.tickets}>

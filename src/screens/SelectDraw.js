@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { api } from '../services/api';
 import Icon from 'react-native-vector-icons/Feather';
 
@@ -10,6 +10,7 @@ import Navbar from '../components/Navbar';
 import DrawInfo from '../components/DrawInfo';
 import colors from '../styles/colors';
 import Ticket from '../components/Ticket';
+import DrawContext from '../contexts/DrawContext';
 
 export default function SelectDraw() {
   useEffect(() => {
@@ -18,6 +19,7 @@ export default function SelectDraw() {
 
   const [draws, setDraws] = useState([])
   const [page, setPage] = useState(1)
+  const { setDraw } = useContext(DrawContext)
 
   const fetchDraws = async () => {
     try {
@@ -36,8 +38,9 @@ export default function SelectDraw() {
     fetchDraws()
   }
 
-  const selectDraw = (drawId, award) => {
-    navigation.navigate('SellTickets', { drawId: drawId, award: award})
+  const selectDraw = (drawId, draw) => {
+    setDraw(draw)
+    navigation.navigate('SellTickets', { drawId: drawId})
   }
 
   const navigation = useNavigation();
@@ -67,7 +70,7 @@ export default function SelectDraw() {
               keyExtractor={item => item.id}
               numColumns={2}
               renderItem={({ item }) => (
-                <TouchableOpacity style={styles.drawCard} onPress={() => selectDraw(item.id, item.award)}>
+                <TouchableOpacity style={styles.drawCard} onPress={() => selectDraw(item.id, item)}>
                   <Text style={styles.drawName}>{item.name}</Text>
                   <Text style={styles.drawAward}>{item.award}</Text>
                 </TouchableOpacity>

@@ -13,7 +13,7 @@ import { api } from '../services/api';
 
 export default function SellTickets({ route }) {
   const navigation = useNavigation();
-  const { drawId, award } = route.params;
+  const { drawId } = route.params;
 
   const [tickets, setTickets] = useState([]);
   const [selectedTickets, setSelectedTickets] = useState([]);
@@ -68,7 +68,7 @@ export default function SellTickets({ route }) {
 
       <View style={{ flex: 1 }}>
         <Navbar></Navbar>
-        <DrawInfo drawAward={award}/>
+        <DrawInfo/>
         <View style={styles.container}>
           <Text style={styles.text}>Bilhetes disponíveis</Text>
           <View style={styles.pageSelector}>

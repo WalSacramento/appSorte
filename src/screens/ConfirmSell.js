@@ -6,8 +6,9 @@ import Navbar from '../components/Navbar';
 import DrawInfo from '../components/DrawInfo';
 import colors from '../styles/colors';
 import ConfirmTicket from '../components/ConfirmTicket';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { api } from '../services/api';
+import UserContext from '../contexts/UserContext';
 
 export default function ConfirmSell({ route }) {
   useEffect(() => {
@@ -21,6 +22,8 @@ export default function ConfirmSell({ route }) {
   const [reservedTickets, setReservedTickets] = useState([])
   const [buyerName, setBuyerName] = useState('')
   const [buyerPhoneNumber, setBuyerPhoneNumber] = useState('')
+
+  const { user } = useContext(UserContext)
 
   const reserveTickets = async () => {
     try {
@@ -43,8 +46,8 @@ export default function ConfirmSell({ route }) {
       const response = await api.post('/sell-tickets', {
         tickets: selectedTickets,
         buyerName: buyerName,
-        buyerPhoneNumber: buyerPhoneNumber
-        
+        buyerPhoneNumber: buyerPhoneNumber,
+        sellerId: user.id
       })
 
       if (response.data) {

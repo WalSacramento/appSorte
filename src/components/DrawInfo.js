@@ -2,16 +2,23 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'reac
 import { useNavigation } from '@react-navigation/native';
 
 import colors from '../styles/colors';
+import { useContext, useEffect } from 'react';
+import DrawContext from '../contexts/DrawContext';
 
-export default function DrawInfo({ drawAward }) {
+export default function DrawInfo() {
   const navigation = useNavigation();
 
+  useEffect(() => {
+    console.log('DrawInfo.js:', draw)
+  }, [])
+
+  const { draw } = useContext(DrawContext)
   return (
     <>
       <View style={styles.drawInfo}>
         <Text style={styles.title}>Premiação:</Text>
         <View style={styles.award}>
-          <Text style={styles.awardText}>{drawAward}</Text>
+          <Text style={styles.awardText}>{draw.award}</Text>
         </View>
       </View>
     </>

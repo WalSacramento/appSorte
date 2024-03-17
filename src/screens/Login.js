@@ -1,11 +1,14 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { api } from '../services/api';
+import UserContext from '../contexts/UserContext';
 
 
 export default function Login() {
   const navigation = useNavigation();
+
+  const { setUser } = useContext(UserContext)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -19,6 +22,7 @@ export default function Login() {
 
       if (response.data.email === email) {
         console.log(response.data)
+        setUser(response.data)
         navigation.navigate('Home')
       }
     } catch (error) {
